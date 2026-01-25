@@ -1,0 +1,43 @@
+#Using need we can make jobs are depend on another job
+for example if build job execute then only script job will execute
+
+#test.sh
+
+#!/bin/bash
+echo "successfully script start executing"
+ls -la
+
+EG:
+#.gitlab-ci.yml
+stages:
+    - build
+    - deploy
+    - test
+
+build_job:
+    stage: build
+    image: busybox
+    script:
+        - echo "successfully run build jobs"
+
+script_job:
+    stage: build
+    image: alpine
+    script:
+        - sh test.sh
+        - echo "successfully run script jobs"
+    needs:
+        - build_job
+
+test_job:
+    stage: test
+    script:
+        - echo "successfully run test jobs"
+    
+
+deploy_job:
+    stage: deploy
+    image: busybox
+    script:
+        - echo "sucessfully run deploy jobs"
+    
