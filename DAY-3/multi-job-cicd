@@ -1,0 +1,43 @@
+1.multi-job in single build stage one for other job another for script execution
+
+#test.sh
+
+#!/bin/bash
+echo "successfully script start executing"
+ls -la
+
+EG:
+#.gitlab-ci.yml
+stages:
+    - build
+    - deploy
+    - test
+
+build_job:
+    stage: build
+    image: busybox
+    script:
+        - echo "successfully run build jobs"
+
+script_job:
+    stage: build
+    image: alpine
+    script:
+        - sh test.sh
+        - echo "successfully run script jobs"
+
+test_job:
+    stage: test
+    script:
+        - echo "successfully run test jobs"
+    
+
+deploy_job:
+    stage: deploy
+    image: busybox
+    script:
+        - echo "sucessfully run deploy jobs"
+
+
+  
+    
