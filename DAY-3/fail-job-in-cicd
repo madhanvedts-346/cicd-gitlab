@@ -1,0 +1,41 @@
+#while excuting build stage it get failed reamaining stages it will not execute
+for example after the script i give exit 1 
+
+#test.sh
+
+#!/bin/bash
+echo "successfully script start executing"
+ls -la
+
+EG:
+#.gitlab-ci.yml
+stages:
+    - build
+    - deploy
+    - test
+
+build_job:
+    stage: build
+    image: busybox
+    script:
+        - echo "successfully run build jobs"
+
+script_job:
+    stage: build
+    image: alpine
+    script:
+        - sh test.sh
+        - echo "successfully run script jobs"
+        - exit 1
+
+test_job:
+    stage: test
+    script:
+        - echo "successfully run test jobs"
+    
+
+deploy_job:
+    stage: deploy
+    image: busybox
+    script:
+        - echo "sucessfully run deploy jobs"
