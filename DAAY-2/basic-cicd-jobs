@@ -1,0 +1,101 @@
+while running the pipeline total five level
+1.Preparing the "docker+machine" executor
+2.Preparing environment
+3.Getting source from Git repository
+4.Executing "step_script" stage of the job script
+  #here only your script will execute
+5.Cleaning up project directory and file based variables
+
+Case1: All the job will execute "Parallelly" because no stages are there
+EG:
+#.gitlab-ci.yml
+build_job:
+    script:
+        - echo "successfully run build job"
+
+test_job:
+    script:
+        - echo "successfully run test job"
+
+deploy_job:
+    script:
+        - echo "sucessfully run deploy job"
+
+----------------------------------------------------------------------------------------------------------------------------        
+
+Case2: Jobs will execute in specfic image for example busybox if your not mention it will run in default image like ruby
+build and deploy job will execute in busybox and test will execute in ruby
+EG:
+#.gitlab-ci.yml
+build_job:
+    image: busybox
+    script:
+        - echo "successfully run build jobs"
+
+test_job:
+    script:
+        - echo "successfully run test jobs"
+
+deploy_job:
+    image: busybox
+    script:
+        - echo "sucessfully run deploy jobs"
+
+----------------------------------------------------------------------------------------------------------------------------
+Case3: run the Jobs in stage wise
+if build fails remaining it will not run 
+for example: build-->deploy-->Test
+EG:
+#.gitlab-ci.yml
+stages:
+    - build
+    - deploy
+    - test
+
+
+build_job:
+    stage: build
+    image: busybox
+    script:
+        - echo "successfully run build jobs"
+
+test_job:
+    stage: test
+    script:
+        - echo "successfully run test jobs"
+
+deploy_job:
+    stage: deploy
+    image: busybox
+    script:
+        - echo "sucessfully run deploy jobs"
+
+----------------------------------------------------------------------------------------------------------------------------
+Case4: run the particular job manually then use when:manual for that particular job
+But remaning two jobs will run it not start manually also
+EG:
+#.gitlab-ci.yml
+stages:
+    - build
+    - deploy
+    - test
+
+
+build_job:
+    stage: build
+    image: busybox
+    script:
+        - echo "successfully run build jobs"
+
+test_job:
+    stage: test
+    script:
+        - echo "successfully run test jobs"
+    
+
+deploy_job:
+    stage: deploy
+    image: busybox
+    script:
+        - echo "sucessfully run deploy jobs"
+    when: manual
