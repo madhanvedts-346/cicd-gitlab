@@ -1,0 +1,62 @@
+#Before and After if you want run any thing use before_script and after_script
+
+#test.sh
+
+#!/bin/bash
+echo "successfully script start executing"
+ls -la
+
+EG:
+#.gitlab-ci.yml
+stages:
+    - build
+    - deploy
+    - test
+
+build_job:
+    stage: build
+    image: busybox
+    script:
+        - echo "successfully run build jobs"
+
+script_job:
+    stage: build
+    image: alpine
+    before_script:
+        - echo "script start excuting in before-script"
+        - echo "start excuting in before-script"
+    script:
+        - sh test.sh
+        - echo "successfully run script jobs"
+    after_script:
+        - echo "script execution done"
+
+test_job:
+    stage: test
+    script:
+        - echo "successfully run test jobs"
+    
+
+deploy_job:
+    stage: deploy
+    image: busybox
+    script:
+        - echo "sucessfully run deploy jobs"
+
+
+-----------------------------------------------------------------------------------------------------
+1.first doubt
+✅ GitLab CI: before_script Failure – What Happens Next?
+
+Short answer:
+❌ If before_script fails, then script will NOT execute
+✅ after_script WILL execute (always)
+
+
+2.second doubt
+
+✅ GitLab CI: If after_script Fails – Will Remaining Stages Execute?
+
+Short answer:
+✔ YES — remaining stages WILL execute
+Because: ❗ Failure in after_script does NOT affect job or pipeline status
