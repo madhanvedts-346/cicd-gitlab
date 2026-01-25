@@ -1,10 +1,18 @@
-while running the pipeline total five level
+#Gitlab runner
+GitLab Runner is an agent that runs your CI/CD jobs defined in .gitlab-ci.yml.
+When you push code to GitLab, the GitLab server tells a Runner to execute the pipeline steps.
+
+
+#while running the pipeline total five level
 1.Preparing the "docker+machine" executor
 2.Preparing environment
 3.Getting source from Git repository
 4.Executing "step_script" stage of the job script
   #here only your script will execute
 5.Cleaning up project directory and file based variables
+
+
+
 
 Case1: All the job will execute "Parallelly" because no stages are there
 EG:
