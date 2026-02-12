@@ -20,3 +20,19 @@ spec:
         image: madhanrs14/nginx:v2
         ports:
         - containerPort: 80
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: madhan1
+spec:
+  type: NodePort
+  selector:
+    app: nginx
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 32074
